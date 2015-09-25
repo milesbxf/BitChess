@@ -11,7 +11,6 @@
 
 using bitchess::move_lookup;
 using bitchess::Bitboard;
-//using namespace bitchess::PieceType;
 
 TEST(MoveLookup_King, GetsCentreMove) {
 	Bitboard result = move_lookup(bitchess::PieceType::KING, 28); //corresponds to e4
