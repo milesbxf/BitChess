@@ -14,8 +14,17 @@
 
 namespace bitchess {
 
+/**
+ * The Search class searches for the most optimal move to play next.
+ */
 class Search {
 public:
+	/**
+	 * Returns the best move found so far.
+	 * @param position Current board position.
+	 * @param side_to_move Side to find a move for.
+	 * @return the best Move.
+	 */
 	Move get_next_move(Position position, Colour side_to_move);
 
 private:

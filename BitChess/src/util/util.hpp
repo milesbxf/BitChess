@@ -10,8 +10,14 @@
 
 namespace bitchess {
 
+/**
+ * Represents a side in chess.
+ */
 enum Colour { WHITE, BLACK };
 namespace PieceType {
+/**
+ * Represents a type of piece, or NO_PIECE.
+ */
 enum PieceType { ROOK, KNIGHT, BISHOP, QUEEN, KING, PAWN, NO_PIECE };
 
 }

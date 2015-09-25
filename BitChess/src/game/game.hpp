@@ -36,13 +36,20 @@ public:
 			pfunc(&polling_function) {
 	}
 
+	/**
+	 * Gets the engine's next best selected move.
+	 * @return a legal Move that the engine has deemed optional
+	 */
 	Move get_next_move();
 
-
-
 private:
+	//pointer to a polling function
 	void (*pfunc)();
+
+	//current board position
 	Position current_position;
+
+	//a searcher used to find the next move
 	Search searcher;
 
 };
