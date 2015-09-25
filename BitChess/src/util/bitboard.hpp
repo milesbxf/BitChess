@@ -53,6 +53,10 @@ inline Bitboard operator<<(Bitboard b,int amount) {
 inline Bitboard operator<<(Bitboard a,Bitboard b) {
 	return Bitboard(a.bits << b.bits);
 }
+inline Bitboard operator<<=(Bitboard a,Bitboard b) {
+	a = a << b;
+	return a;
+}
 inline Bitboard operator>>(Bitboard b,int amount) {
 	return Bitboard(b.bits.to_ulong() >> amount);
 }
@@ -65,6 +69,10 @@ inline Bitboard operator&(Bitboard b,int amount) {
 inline Bitboard operator&(Bitboard a,Bitboard b) {
 	return Bitboard(a.bits & b.bits);
 }
+inline Bitboard operator&=(Bitboard &a, Bitboard b) {
+	a = a & b;
+	return a;
+}
 inline Bitboard operator~(Bitboard b) {
 	return Bitboard(~b.bits);
 }
@@ -73,6 +81,10 @@ inline Bitboard operator|(Bitboard b,int amount) {
 }
 inline Bitboard operator|(Bitboard a,Bitboard b) {
 	return Bitboard(a.bits | b.bits);
+}
+inline Bitboard operator|=(Bitboard &a, Bitboard b) {
+	a = a | b;
+	return a;
 }
 inline Bitboard operator^(Bitboard b,int amount) {
 	return Bitboard(b.bits.to_ulong() ^ amount);
