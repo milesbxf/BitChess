@@ -10,6 +10,8 @@
 
 #include <bitset>
 
+typedef unsigned long long int UINT_64;
+
 namespace bitchess {
 
 /**
@@ -126,7 +128,7 @@ public:
 /**
  * @return the Bitboard b with bits left shifted by amount.
  */
-inline Bitboard operator<<(Bitboard b,int amount) {
+inline Bitboard operator<<(Bitboard b,UINT_64 amount) {
 	return Bitboard(b.bits.to_ulong() << amount);
 }
 /**
@@ -138,7 +140,7 @@ inline Bitboard operator<<(Bitboard a,Bitboard b) {
 /**
  * @return the Bitboard b with bits right shifted by amount.
  */
-inline Bitboard operator>>(Bitboard b,int amount) {
+inline Bitboard operator>>(Bitboard b,UINT_64 amount) {
 	return Bitboard(b.bits.to_ulong() >> amount);
 }
 /**
@@ -150,7 +152,7 @@ inline Bitboard operator>>(Bitboard a,Bitboard b) {
 /**
  * @return the Bitboard b, bitwise AND with amount
  */
-inline Bitboard operator&(Bitboard b,int amount) {
+inline Bitboard operator&(Bitboard b,UINT_64 amount) {
 	return Bitboard(b.bits.to_ulong() & amount);
 }
 /**
@@ -175,7 +177,7 @@ inline Bitboard operator~(Bitboard b) {
 /**
  * @return the Bitboard b, bitwise OR with amount
  */
-inline Bitboard operator|(Bitboard b,int amount) {
+inline Bitboard operator|(Bitboard b,UINT_64 amount) {
 	return Bitboard(b.bits.to_ulong() | amount);
 }
 /**
@@ -194,7 +196,7 @@ inline Bitboard operator|=(Bitboard &a, Bitboard b) {
 /**
  * @return the Bitboard b, bitwise XOR with amount
  */
-inline Bitboard operator^(Bitboard b,int amount) {
+inline Bitboard operator^(Bitboard b,UINT_64 amount) {
 	return Bitboard(b.bits.to_ulong() ^ amount);
 }
 /**

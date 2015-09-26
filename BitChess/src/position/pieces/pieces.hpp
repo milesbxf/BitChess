@@ -66,10 +66,17 @@ protected:
 class Pawn : public Piece {
 public:
 	virtual std::vector<bitchess::Move> get_pseudolegal_moves();
+	Pawn() {
+
+	}
 	Pawn(Bitboard initial_occupancy) {
 		occupancy = Bitboard(initial_occupancy);
 	}
 	Bitboard get_single_moves(Colour colour,Bitboard occupancy);
+	Bitboard get_double_moves(Colour colour,Bitboard occupancy);
+	Bitboard get_captures(Colour colour,Bitboard opp_occupancy);
+	Bitboard get_promotions(Colour colour,Bitboard single_moves);
+
 };
 
 }

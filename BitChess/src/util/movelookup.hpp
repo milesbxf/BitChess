@@ -49,14 +49,38 @@ static bitchess::Bitboard __gen_king_move__( short sq ) {
 
 	// get a bitboard with the occupancy of the king
 	bitchess::Bitboard occ = bitchess::Bitboard::with_bit_set_at(sq);
-	bitchess::Bitboard b;
 
 	// shift the occupancy bitboard in each direction to represent
 	// a king move
-	b = occ.nortOne() | occ.noEaOne() | occ.eastOne() | occ.soEaOne()
-		| occ.soutOne() | occ.soWeOne() | occ.westOne() | occ.noWeOne();
 
-	return b;
+	return occ.nortOne() | occ.noEaOne() | occ.eastOne() | occ.soEaOne()
+			| occ.soutOne() | occ.soWeOne() | occ.westOne() | occ.noWeOne();;
+}
+
+/**
+ * Generates a Bitboard of white pawn captures from a specific square.
+ * @param sq Square index [0-64] to get a move for.
+ * @return Bitboard with 1 indicating a valid move.
+ */
+static bitchess::Bitboard __gen_white_pawn_caps__( short sq ) {
+	// get the occupancy bitboard
+	bitchess::Bitboard occ = bitchess::Bitboard::with_bit_set_at(sq);
+
+	//shift noEast and noWest to get caps
+	return occ.noWeOne() | occ.noEaOne();
+}
+
+/**
+ * Generates a Bitboard of black pawn captures from a specific square.
+ * @param sq Square index [0-64] to get a move for.
+ * @return Bitboard with 1 indicating a valid move.
+ */
+static bitchess::Bitboard __gen_black_pawn_caps__( short sq ) {
+	// get the occupancy bitboard
+	bitchess::Bitboard occ = bitchess::Bitboard::with_bit_set_at(sq);
+
+	//shift soEast and soWest to get caps
+	return occ.soWeOne() | occ.soEaOne();
 }
 
 /**
@@ -83,6 +107,21 @@ static std::array<bitchess::Bitboard, 64> __init_knight_move_arr__() {
 		arr[sq] = __gen__knight_move__(sq);
 	}
 	return arr;
+}
+
+static std::array<bitchess::Bitboard, 64> __init_pawn_caps_arr__(bitchess::Colour colour) {
+	std::array<bitchess::Bitboard, 64> arr;
+	for( int sq= 0; sq < 64; ++sq) {
+		arr[sq] = (colour==bitchess::Colour::WHITE) ? __gen_white_pawn_caps__(sq) : __gen_black_pawn_caps__(sq);
+	}
+	return arr;
+}
+
+static std::map<bitchess::Colour, std::array<bitchess::Bitboard, 64>> __lookup_pawn_cap__() {
+	static std::map<bitchess::Colour, std::array<bitchess::Bitboard, 64>> map =
+	{{bitchess::Colour::WHITE, __init_pawn_caps_arr__(bitchess::Colour::WHITE)},
+	{bitchess::Colour::BLACK, __init_pawn_caps_arr__(bitchess::Colour::BLACK)}};
+	return map;
 }
 
 /**
@@ -118,6 +157,10 @@ inline bitchess::Bitboard move_lookup( bitchess::PieceType::PieceType piece,
 	// check that piece is in lookup map.
 	assert(__lookup_piece_map__().count(piece) > 0);
 	return __lookup_piece_map__()[piece][sq];
+}
+
+inline bitchess::Bitboard lookup_pawn_capture( bitchess::Colour colour, short sq ) {
+	return __lookup_pawn_cap__()[colour][sq];
 }
 
 }
