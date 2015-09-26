@@ -120,6 +120,30 @@ public:
 	inline Bitboard soWeOne();
 
 	/**
+	 * @return the least significant bit, or -1 if the bitset is empty.
+	 */
+	inline short ls1b() {
+		return __builtin_ffsll(bits.to_ulong()) -1;
+	}
+
+	/**
+	 * Bitscans for the least significant bit and returns its index, as well as
+	 * the Bitboard with the bit set to zero (for further bitscanning).
+	 * @return std::pair with the index of the LS1B and a new bitboard with the bit removed.
+	 * If this Bitboard is empty, the function returns pair<-1, empty_bitboard>.
+	 */
+	inline std::pair<short, Bitboard> bitscan_and_remove() {
+		short lsb = ls1b();
+
+		if(lsb==-1) {
+			return std::pair<short, Bitboard>(-1, Bitboard());
+		}
+		Bitboard b(this->bits);
+		b.bits.set(lsb,false);
+		return std::pair<short, Bitboard>(lsb, b);
+	}
+
+	/**
 	 * Stores the set of bits.
 	 */
 	std::bitset<64> bits;

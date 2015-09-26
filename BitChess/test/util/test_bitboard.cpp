@@ -144,3 +144,19 @@ TEST( Bitboard, ShiftsSouthWest) {
 	ASSERT_EQ(Bitboard(expected),result);
 
 }
+
+TEST( Bitboard, Bitscan_LSB) {
+	short expected = 5;
+
+	Bitboard b = Bitboard::with_bit_set_at(expected);
+	short result = b.ls1b();
+
+	ASSERT_EQ(expected, result);
+}
+
+TEST(Bitboard, Bitscan_and_remove) {
+	Bitboard expected = Bitboard(0xFFFFFFFE);
+	Bitboard result = Bitboard(0xFFFFFFFF).bitscan_and_remove().second;
+
+	ASSERT_EQ(expected,result);
+}
