@@ -44,7 +44,7 @@ public:
 	bool is_capture;	//whether move results in capture of an opposing piece
 	bool is_check;		//whether move results in check of opposing king
 	bool is_checkmate;	//whether move results in checkmate of opposing side
-	bitchess::PieceType piece; //piece that moves
+	bitchess::PieceType::PieceType piece; //piece that moves
 	move::PromotionType::PromotionType promotion_type; //type of promotion, if any
 	move::SpecMoveType::SpecMoveType special_move; //type of special move, if any
 

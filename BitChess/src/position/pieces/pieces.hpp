@@ -30,43 +30,46 @@ public:
 	 * tested.
 	 * @return a vector of pseudolegal moves.
 	 */
-	virtual std::vector<bitchess::Move> get_pseudolegal_moves();
-	virtual ~Piece();
+	virtual std::vector<bitchess::Move> get_pseudolegal_moves() {}
 
 protected:
 	/**
 	 * Initialises the piece with empty occupancy, i.e. it is not on the board.
 	 */
-	Piece();
+	Piece() {	}
 	/**
 	 * Initialises the piece with occupancy on initial_sq. Further squares may be occupied.
 	 * @param initial_sq Initial square that the piece occupies.
 	 */
 	Piece(int initial_sq);
-
-private:
 	bitchess::Bitboard occupancy;
 };
 
-class PieceNone : public Piece {
-};
-
-class Rook : public Piece {
-};
-
-class Bishop : public Piece {
-};
-
-class Queen : public Piece {
-};
-
-class King : public Piece {
-};
-
-class Knight : public Piece {
-};
+//class PieceNone : public Piece {
+//};
+//
+//class Rook : public Piece {
+//};
+//
+//class Bishop : public Piece {
+//};
+//
+//class Queen : public Piece {
+//};
+//
+//class King : public Piece {
+//};
+//
+//class Knight : public Piece {
+//};
 
 class Pawn : public Piece {
+public:
+	virtual std::vector<bitchess::Move> get_pseudolegal_moves();
+	Pawn(Bitboard initial_occupancy) {
+		occupancy = Bitboard(initial_occupancy);
+	}
+	Bitboard get_single_moves(Colour colour,Bitboard occupancy);
 };
 
 }
