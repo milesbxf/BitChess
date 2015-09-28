@@ -10,6 +10,8 @@
 
 #include "util/util.hpp"
 
+#include <iostream>
+
 namespace bitchess {
 
 namespace move {
@@ -78,6 +80,11 @@ inline bool operator==( const bitchess::Move a, const bitchess::Move b ) {
 			&& (a.promotion_type == b.promotion_type)
 			&& (a.special_move == b.special_move) && (a.piece == b.piece);
 
+}
+
+inline std::ostream& operator<<(std::ostream& stream, Move move) {
+	return stream << '[' << move.piece << bitchess::index_to_square(move.sq_origin) << (move.is_capture? 'x' : '-') <<
+			bitchess::index_to_square(move.sq_target) << (move.is_check ? "+" : "") <<"]";
 }
 
 }
