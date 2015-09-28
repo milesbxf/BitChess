@@ -22,7 +22,7 @@ enum PromotionType {
 	NONE, QUEEN, ROOK, KNIGHT, BISHOP
 };
 }
-namespace SpecMoveType{
+namespace SpecMoveType {
 /**
  * Represents the type of special move.
  */
@@ -39,14 +39,23 @@ enum SpecMoveType {
  */
 class Move {
 public:
+	Move( short origin_square, short target_square, bool is_a_capture,
+			bitchess::PieceType::PieceType piece_moved ) :
+			sq_origin(origin_square), sq_target(target_square),
+			is_capture(is_a_capture), piece(piece_moved) {
+	}
+	Move() {}
+
 	short sq_origin;	//origin square, where piece is moved from
 	short sq_target;	//target square, where piece is moved to
 	bool is_capture;	//whether move results in capture of an opposing piece
-	bool is_check;		//whether move results in check of opposing king
-	bool is_checkmate;	//whether move results in checkmate of opposing side
+	bool is_check = false;		//whether move results in check of opposing king
+	bool is_checkmate = false;//whether move results in checkmate of opposing side
 	bitchess::PieceType::PieceType piece; //piece that moves
-	move::PromotionType::PromotionType promotion_type; //type of promotion, if any
-	move::SpecMoveType::SpecMoveType special_move; //type of special move, if any
+	move::PromotionType::PromotionType promotion_type =
+			move::PromotionType::PromotionType::NONE; //type of promotion, if any
+	move::SpecMoveType::SpecMoveType special_move =
+			move::SpecMoveType::SpecMoveType::NONE; //type of special move, if any
 
 	/**
 	 * Gets the move in standard algebraic notation, e.g. bishop to e4 is Be4. See
@@ -62,5 +71,15 @@ public:
 	std::string get_in_coordinate();
 };
 
+inline bool operator==( const bitchess::Move a, const bitchess::Move b ) {
+	return (a.is_capture == b.is_capture) && (a.is_check == b.is_check)
+			&& (a.is_checkmate == b.is_checkmate)
+			&& (a.sq_origin == b.sq_origin) && (a.sq_target == b.sq_target)
+			&& (a.promotion_type == b.promotion_type)
+			&& (a.special_move == b.special_move) && (a.piece == b.piece);
+
 }
+
+}
+
 #endif /* POSITION_MOVE_HPP_ */
