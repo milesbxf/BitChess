@@ -10,8 +10,10 @@
 
 #include "util/bitboard.hpp"
 #include "position/move.hpp"
+#include "util/movelookup.hpp"
 
 #include <vector>
+#include <assert.h>
 
 namespace bitchess {
 namespace pieces {
@@ -30,18 +32,22 @@ public:
 	 * tested.
 	 * @return a vector of pseudolegal moves.
 	 */
-	virtual std::vector<bitchess::Move> get_pseudolegal_moves() {}
+	virtual std::vector<bitchess::Move> get_pseudolegal_moves(
+			Bitboard all_occupancy, Bitboard own_occupancy,
+			Bitboard opp_occupancy ) {
+	}
 
 protected:
 	/**
 	 * Initialises the piece with empty occupancy, i.e. it is not on the board.
 	 */
-	Piece() {	}
+	Piece() {
+	}
 	/**
 	 * Initialises the piece with occupancy on initial_sq. Further squares may be occupied.
 	 * @param initial_sq Initial square that the piece occupies.
 	 */
-	Piece(int initial_sq);
+	Piece( int initial_sq );
 	bitchess::Bitboard occupancy;
 };
 
@@ -57,25 +63,72 @@ protected:
 //class Queen : public Piece {
 //};
 //
-//class King : public Piece {
-//};
+class King: public Piece {
+private:
+	/**
+	 * Extracted method scanning moves from a calculated bitboard.
+	 *
+	 * Scans for the LS1B bit of the bitboard, gets its index and removes it, modifying
+	 * moves_bb. Replaces the Move reference given with a new Move.
+	 * @param king_loc board index of king location.
+	 * @param moves_bb bitboard to scan from.
+	 * @param move Reference of Move to modify, typically an array element
+	 * @param is_capture whether the created Move should be a capture
+	 */
+	inline void __scan_moves__(short king_loc,Bitboard& moves_bb, bitchess::Move& move, bool is_capture) {
+		// scan and remove LS1B
+		std::pair<short, Bitboard> result = moves_bb.bitscan_and_remove();
+		int target_sq = result.first; // index of LS1B
+		moves_bb = result.second; // bitboard resulting from bitscan and remove
+		// create a new move at the given reference
+		move = (bitchess::Move(king_loc,target_sq,is_capture,bitchess::PieceType::KING));
+	}
+public:
+	/**
+	 * Creates a new King with a blank occupancy bitboard.
+	 */
+	King() {
+
+	}
+
+	/**
+	 * Creates a new King with an initial occupancy bitboard.
+	 * @param initial_occupancy
+	 */
+	King( Bitboard initial_occupancy ) {
+		occupancy = Bitboard(initial_occupancy);
+	}
+
+	/**
+	 * Gets all pseudolegal moves available to the King. Some moves may result in the
+	 * king moving into check, therefore not being legal; these must be checked.
+	 * @return a vector of pseudolegal moves.
+	 */
+	virtual std::vector<bitchess::Move> get_pseudolegal_moves(
+			Bitboard all_occupancy, Bitboard own_occupancy,
+			Bitboard opp_occupancy );
+
+};
 //
 //class Knight : public Piece {
 //};
 
-class Pawn : public Piece {
+class Pawn: public Piece {
+	//TODO: Separate into two more subclasses, BlackPawn and WhitePawn
 public:
-	virtual std::vector<bitchess::Move> get_pseudolegal_moves();
+	virtual std::vector<bitchess::Move> get_pseudolegal_moves(
+			Bitboard all_occupancy, Bitboard own_occupancy,
+			Bitboard opp_occupancy );
 	Pawn() {
 
 	}
-	Pawn(Bitboard initial_occupancy) {
+	Pawn( Bitboard initial_occupancy ) {
 		occupancy = Bitboard(initial_occupancy);
 	}
-	Bitboard get_single_moves(Colour colour,Bitboard occupancy);
-	Bitboard get_double_moves(Colour colour,Bitboard occupancy);
-	Bitboard get_captures(Colour colour,Bitboard opp_occupancy);
-	Bitboard get_promotions(Colour colour,Bitboard single_moves);
+	Bitboard get_single_moves( Colour colour, Bitboard occupancy );
+	Bitboard get_double_moves( Colour colour, Bitboard occupancy );
+	Bitboard get_captures( Colour colour, Bitboard opp_occupancy );
+	Bitboard get_promotions( Colour colour, Bitboard single_moves );
 
 };
 
