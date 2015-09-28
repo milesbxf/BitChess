@@ -8,6 +8,11 @@
 #ifndef UTIL_UTIL_HPP_
 #define UTIL_UTIL_HPP_
 
+#include <string>
+#include <array>
+
+#include <iostream>
+
 namespace bitchess {
 
 /**
@@ -20,7 +25,29 @@ namespace PieceType {
  */
 enum PieceType { ROOK, KNIGHT, BISHOP, QUEEN, KING, PAWN, NO_PIECE };
 
+
+
 }
+
+inline std::ostream& operator<<(std::ostream& out, const PieceType::PieceType piece) {
+	static std::array<std::string, 7> pieces = {{"R","N","B","Q","K", "p", "Empty"}};
+	return out << pieces[piece];
 }
+
+inline std::string index_to_square(int index) {
+	/*  with little endian file-rank mapping, the file is the dividend
+	 *  and the rank is the remainder. E.g. (35/8) ~= 4 and 35 % 8 = 4.
+	 *  By adding 97 the dividend is converted to an ascii letter, with
+	 *  0 = a, 1 = b, 2 = c etc. As for the remainder, as it is zero indexed,
+	 *  just add one to get the remainder string. E.g. 4 -> 5 hence
+	 *  index_to_square(35) = "e5".
+	 */
+	int div = (index/8)+97;
+	short rem = index % 8;
+	return std::string(1,div) + std::to_string(rem + 1);
+}
+
+}
+
 
 #endif /* UTIL_UTIL_HPP_ */
