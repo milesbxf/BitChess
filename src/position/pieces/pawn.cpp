@@ -70,7 +70,8 @@ Bitboard Pawn::get_promotions(Colour colour,Bitboard single_moves) {
 }
 
 
-std::vector<Move> Pawn::get_pseudolegal_moves() {
+std::vector<Move> Pawn::get_pseudolegal_moves(
+			Bitboard all_occupancy, Bitboard own_occupancy,
+			Bitboard opp_occupancy ) {
 	return std::vector<Move>();
 }
-
