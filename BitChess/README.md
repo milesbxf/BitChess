@@ -1,4 +1,14 @@
 #BitChess
+
+A simple but rapid C++ chess engine which generates moves given a particular chessboard
+position. The engine is optimised through the use of lookup tables for piece moves. The board is
+represented internally as a set of 64-bit words (as there are 64 squares on a chess board),
+structures commonly known in chess programming as bitboards. Many complex calculations
+can be performed rapidly through bit operations between bitboards, e.g. rook_moves AND
+NOT(occupancy_all)combines a bitboard showing potential rook moves and a bitboard
+showing the squares that are not occupied, with the set intersection (boolean AND) showing the
+potential rook moves.
+
 ##Overview
 BitChess is a simple C++ chess engine. It is intended to be used with [Xboard/Winboard protocol](http://www.gnu.org/software/xboard/engine-intf.html) compatible chess GUIs (with potential UCI support in the future). This doc outlines the implementation and architecture behind the project.
 
