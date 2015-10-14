@@ -9,6 +9,15 @@ NOT(occupancy_all)combines a bitboard showing potential rook moves and a bitboar
 showing the squares that are not occupied, with the set intersection (boolean AND) showing the
 potential rook moves.
 
+#To run
+
+The project currently only consists of unit tests, as game functionality is intended to be added in future. It uses the CMake build system. Out-of-source builds are recommended, create a folder (e.g. /build/), and run:
+```
+cmake -D GMOCK_DIR=/usr/src/gtest/googlemock -D GTEST_DIR=/usr/src/gtest/googletest  ..
+make
+```
+where ```GMOCK_DIR``` and ```GTEST_DIR``` are directories containing Google Mock and [Google Test](https://github.com/google/googletest). Run the resulting BitChessTests executable and a list of test results should come up. These instructions have only been tested on Linux with GCC; CMake can also generate files for other systems (e.g. Visual Studio) but these have not been tested.
+
 ##Overview
 BitChess is a simple C++ chess engine. It is intended to be used with [Xboard/Winboard protocol](http://www.gnu.org/software/xboard/engine-intf.html) compatible chess GUIs (with potential UCI support in the future). This doc outlines the implementation and architecture behind the project.
 
